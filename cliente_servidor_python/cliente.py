@@ -15,8 +15,9 @@ sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 
 while True :
 
-	mensaje = str.encode('hola')
-	sock.sendto(mensaje,(udpIP,udpPORT))
-	time.sleep(5)
+#	mensaje = str.encode('CONTROL sadfasdf')
+    mensaje = str.encode("asdfasd")
+    sock.sendto(mensaje,(udpIP,udpPORT))
+    time.sleep(5)
 
 

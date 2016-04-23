@@ -1,0 +1,20 @@
+#################################################
+##                   NIVEL 3                   ##
+#################################################
+##                                             ##
+##                TODO PERMITIDO               ##                                     
+##                                             ##
+#################################################
+
+## Primero limpiamos las reglas anteriores.
+
+iptables -F INPUT
+iptables -F FORWARD
+iptables -F OUTPUT
+
+## Hacemos que por defecto la política sea rechazar los paquetes
+
+iptables --policy INPUT ACCEPT
+iptables --policy OUTPUT ACCEPT
+iptables --policy FORWARD ACCEPT
+

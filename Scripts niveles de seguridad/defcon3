@@ -1,0 +1,11 @@
+
+# Matamos todos los procesos de snort para iniciarlo con la nueva configuración
+killall snort
+
+#Iniciamos snort con la nueva configuración
+snort -A console -q -c /etc/snort/snort_3.conf
+
+#Iniciamos el cortafuegos con la nueva configuración
+./home/pi/script_niveles_seguridad/nivel2
+
+

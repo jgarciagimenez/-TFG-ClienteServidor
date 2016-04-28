@@ -25,11 +25,11 @@ public_key_ser = public_key.public_bytes(
 )
 
 
-outfile = open('clave_privada.pem','wb')
+outfile = open('clave_privada_servidor.pem','wb')
 outfile.write(private_key_ser)
 outfile.close
 
-outfile = open('clave_publica.pem','wb')
+outfile = open('clave_publica_servidor.pem','wb')
 outfile.write(public_key_ser)
 outfile.close
 

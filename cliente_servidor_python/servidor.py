@@ -8,16 +8,27 @@ from cryptography.hazmat.primitives import hashes
 
 
 def solicitarNivel():
-    #Pendiente de implementar
-    return "asdfasdfasdf"
 
-#def solicitarFirewall():
-    #Pendiente de implementar
-
-#def solicitarSnort():
-    #Pendiente de implementar
+    return nivelActual
 
 
+def solicitarFirewall():
+
+    if nivelActual[6] == '1' or nivelActual[6] == '2' or nivelActual[6] == '4':
+        return "Cortafuegos estricto "
+    elif nivelActual[6] == '3':
+        return "Cortafuegos medio "
+    elif nivelActual[6] == '5' or nivelActual[6] == '6':
+        return "Cortafuegos desactivado"
+
+def solicitarSnort():
+
+    if nivelActual[6] == '1' or nivelActual[6] == '3' or nivelActual[6] == '5':
+        return "Snort estricto "
+    elif nivelActual[6] == '2':
+        return "Snort medio "
+    elif nivelActual[6] == '4' or nivelActual[6] == '6':
+        return "Snort desactivado"
 
     
 def defcon(codigo):
@@ -30,6 +41,8 @@ def activarDefcon(valor):
     t = time.strftime("%H:%M:%S")
     d = time.strftime("%d/%m/%Y")   
     print (str(d) +" "+ str(t) + "  Activamos el nivel de seguridad Defcon  " + valor)
+    respuesta = 'defcon'+valor
+    return respuesta
 
     ## Falta por definir los scripts que activen los niveles.
 
@@ -42,10 +55,11 @@ def query(valor):
         respuesta =  solicitarNivel();
         print (str(d) +" "+ str(t) + "  Se recibe el mensaje de control  " + valor)
     elif(int(valor) == 2):
-        # solicitarFirewall();
+        respuesta = solicitarFirewall();
+        print ("\n\n\nafañskdjfañsldkjf:" + respuesta + '\n\n\n')
         print (str(d) +" "+ str(t) + "  Se recibe el mensaje de control  " + valor)
     elif(int(valor) == 3):
-        # solicitarSnort();
+        respuesta = solicitarSnort();
         print (str(d) +" "+ str(t) + "  Se recibe el mensaje de control  " + valor)
 
     return respuesta
@@ -58,6 +72,8 @@ udpIP_cliente = '127.0.0.1'
 udpPORT_cliente = 4488
 sock_escucha = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 sock_habla = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+
+nivelActual = ""
 
 ## Iniciamos el socket
 
@@ -77,8 +93,6 @@ with open ('clave_publica_cliente.pem','rb') as key_file:
         key_file.read(),
         backend = default_backend()
     )
-
-
 
 
 ## Creamos un bucle para que esté escuhando constantenmente
@@ -111,7 +125,8 @@ while True :
     
     ## Cipher the the encoded message with the server public key 
 
-        cifrado = public_key_client.encrypt(
+
+        cifrado_respuesta = public_key_client.encrypt(
             mensaje,
             padding.OAEP(
                 mgf=padding.MGF1(algorithm=hashes.SHA1()),
@@ -120,12 +135,12 @@ while True :
             )
         )
             ## Send the encrypted message to the server
-        sock_habla.sendto(cifrado,(udpIP_cliente,udpPORT_cliente))
+        sock_habla.sendto(cifrado_respuesta,(udpIP_cliente,udpPORT_cliente))
 
 
 
     elif recibido.isdigit():
-        activarDefcon(recibido)
+        nivelActual = activarDefcon(recibido)
 
     else:
         print("Se ha recibido un mensaje erroneo")

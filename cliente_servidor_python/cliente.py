@@ -54,7 +54,7 @@ with open ('clave_publica_servidor.pem','rb') as key_file:
 ## Cargamos nuestra clave privada de un fichero.pem
 ## Load our private key from a .pem file
 
-with open ('clave_privada_servidor.pem','rb') as key_file:
+with open ('clave_privada_cliente.pem','rb') as key_file:
     private_key_client = serialization.load_pem_private_key(
         key_file.read(),
         password = None,
@@ -113,17 +113,17 @@ while True:
 
 		## Receive the answer for the Query
 
-		datos,direccion = sock_escucha.recvfrom(1024)  ## 1024 es el tamaño del buffer           
-		query_cifrado = datos
+		datos_respuesta,direccion = sock_escucha.recvfrom(1024)  ## 1024 es el tamaño del buffer           
+		query_cifrado = datos_respuesta
 
 		## Decrypt the answer
 
 		descifrado = private_key_client.decrypt(
-			cifrado,
+			query_cifrado,
 			padding.OAEP(
-			mgf=padding.MGF1(algorithm=hashes.SHA1()),
-			algorithm=hashes.SHA1(),
-			label=None
+				mgf=padding.MGF1(algorithm=hashes.SHA1()),
+				algorithm=hashes.SHA1(),
+				label=None
 			)
 		)
 

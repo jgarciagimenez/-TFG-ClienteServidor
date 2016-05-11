@@ -1,5 +1,6 @@
 import socket 
 import time
+import os
 
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.backends import default_backend
@@ -31,17 +32,30 @@ def solicitarSnort():
         return "Snort desactivado"
 
     
-def defcon(codigo):
-    ## Función para cambiar los parámetros del nivel de seguridad.
-    
-    print ("se ha entradoe en la función defcon para cambiar el nivel de seguridad")
-    
 def activarDefcon(valor):
 
     t = time.strftime("%H:%M:%S")
     d = time.strftime("%d/%m/%Y")   
     print (str(d) +" "+ str(t) + "  Activamos el nivel de seguridad Defcon  " + valor)
     respuesta = 'defcon'+valor
+
+    os.system("pkill snort")  ## Matamos el anterior proceso de snort para iniciar uno nuevo
+
+    if valor == '1':
+        os.system("./defcon1")        
+    if valor == '2':
+        os.system("./defcon2")
+    if valor == '3':
+        os.system("./defcon3")
+    if valor == '4':
+        os.system("./defcon4")
+    if valor == '5':
+        os.system("./defcon5")
+    if valor == '6':
+        os.system("./defcon6")
+
+    else : 
+        print ("asdfasgdasdfg")
     return respuesta
 
     ## Falta por definir los scripts que activen los niveles.
@@ -66,9 +80,9 @@ def query(valor):
 
 ## Creamos las variables con los parámetros para el socket y creamos el socket
 
-udpIP_servidor = '127.0.0.1'
+udpIP_servidor = ''
 udpPORT_servidor = 4444
-udpIP_cliente = '127.0.0.1'
+udpIP_cliente = '192.168.1.10'
 udpPORT_cliente = 4488
 sock_escucha = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 sock_habla = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)

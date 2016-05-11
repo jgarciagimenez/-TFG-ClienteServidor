@@ -26,10 +26,10 @@ def imprimir_niveles():
 ## Definimos lo parámetros para el socket para escuchar y hablar , se podrían ingresar por la consola si se desea
 ## Define the parametres needed to create the listen socket and the talking socket
 
-udpIP_servidor = "127.0.0.1"
+udpIP_servidor = "192.168.1.20"
 udpPORT_servidor = 4444
 query = False 
-udpIP_cliente = "127.0.0.1"
+udpIP_cliente = ""
 udpPORT_cliente = 4488
 
 ## Creamos los  sockets

@@ -6,8 +6,12 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives import hashes
 
-## Función para imprimir el menú para que el agente de sguridad eliga el nivel de seguridad
-## Function to print the menu to select the differents levles of security and queries to the server 
+#########################################################################
+## Función para imprimir el menú para que el agente de sguridad        ##
+## eliga el nivel de seguridad                                         ##
+## Function to print the menu to select the differents levles of       ##
+## security and queries to the server                                  ##
+#########################################################################
 
 def imprimir_niveles():
 	print ("Los niveles a elegir son los siguietes: \n")
@@ -21,6 +25,12 @@ def imprimir_niveles():
 	print (" -- 1: Solicitar nivel activado actualmente")
 	print (" -- 2: Solicitar configuración firewall actual")
 	print (" -- 3: Solicitar configuración snort actual")
+
+
+
+#########################################################################
+##                           MAIN PROGRAM                              ##
+#########################################################################
 
 
 ## Definimos lo parámetros para el socket para escuchar y hablar , se podrían ingresar por la consola si se desea
@@ -62,16 +72,21 @@ with open ('clave_privada_cliente.pem','rb') as key_file:
     )
 
 
+#########################################################################
+##                           MAIN LOOP                                 ##
+#########################################################################
+
 
 while True:
 
 	correcto = False  # var to check if the user input is correct
 	query = False   # var to check if the message is a query
-	input ("\n Pulsa enter para desplegar el menu ")
+	input ("\n Pulsa enter para desplegar el menu ")   
 
 	imprimir_niveles()  
 
 
+## Capturamos la entrada del teclado y comprobamos si es una entrada válida
 ## take the input from console until there is a valid input
 	while correcto == False:
 
@@ -107,16 +122,22 @@ while True:
 	sock_habla.sendto(cifrado,(udpIP_servidor,udpPORT_servidor))
 
 
+		## The program enter in this if que the option choosen is a query
 
-	if query :
+	if query :   
 		print("\n Se manda el mensaje de query " + defcon+ "\n")
 
-		## Receive the answer for the Query
+		## Wait until we receive the answer for the Query
 
 		datos_respuesta,direccion = sock_escucha.recvfrom(1024)  ## 1024 es el tamaño del buffer           
 		query_cifrado = datos_respuesta
 
-		## Decrypt the answer
+		## When we receive the query and send the ACK
+
+		sock_habla.sendto(str.encode("ACK"),(udpIP_servidor,udpPORT_servidor))
+
+
+		## Decrypt the answer of the query
 
 		descifrado = private_key_client.decrypt(
 			query_cifrado,
@@ -129,8 +150,25 @@ while True:
 
 		print (" La contestación del servidor es : " + descifrado.decode('UTF-8'))
     
+    ## Whe enter the else when we send an alert level.
+
 	else : 
-		print("\n Se manda el nivel " + defcon)
+
+		## we wait for the ACK of the sended alert level.
+
+		try:		
+			print("\n Se manda el nivel " + defcon)
+			datos_respuesta,direccion = sock_escucha.recvfrom(1024)
+			
+			if datos_respuesta.decode('UTF-8') == 'ACK':
+				print("Se recibe el ACK")
+			else: 
+				print ("Se recibe: " + datos_respuesta.decode('UTF-8'))
+
+		except timeout:
+			print ("ACK timeout")
+
+
 
 
 

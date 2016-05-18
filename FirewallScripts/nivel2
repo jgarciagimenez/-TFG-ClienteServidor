@@ -30,7 +30,11 @@ iptables -A OUTPUT -p tcp --sport 22 -m state --state ESTABLISHED,RELATED -j ACC
 
 
 #Permitimos que llegen mensajes de control                    
-iptables -A INPUT -p udp --dport 4444 -s 192.168.1.30 -j ACCEPT   #### Mensajes control 
+iptables -A INPUT -p udp --dport 4444 -s 192.168.1.10 -j ACCEPT   #### Mensajes control 
+iptables -A OUTPUT -p udp --dport 4488 -d 192.168.1.10 -j ACCEPT
+
+#Permitimos que se envien los paquetes netflow generados con fprobe
+iptables -A OUTPUT -p udp --dport 5555 -j ACCEPT
 
 #Permitimos mandar ack a los mensajes de control
   

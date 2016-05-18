@@ -25,5 +25,10 @@ iptables -A INPUT -p tcp --dport 22 -j ACCEPT
 iptables -A OUTPUT -p tcp --sport 22 -m state --state ESTABLISHED,RELATED -j ACCEPT 
 
 # Permitimos los mensjes de control
-iptables -A INPUT -p udp --dport 4444 -s 192.168.1.30 -j ACCEPT
+iptables -A INPUT -p udp --dport 4444 -s 192.168.1.10 -j ACCEPT
+iptables -A OUTPUT -p udp --dport 4488 -d 192.168.1.10 -j ACCEPT
 
+
+#Permitimos el tráfico netflow generado con fprobe
+
+iptables -A OUTPUT -p udp --dport 5555 -j ACCEPT

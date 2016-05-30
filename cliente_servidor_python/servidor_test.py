@@ -2,10 +2,12 @@ import socket
 import time
 import os
 
-from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives.asymmetric import padding
-from cryptography.hazmat.primitives import hashes
+# from cryptography.hazmat.primitives import serialization
+# from cryptography.hazmat.backends import default_backend
+# from cryptography.hazmat.primitives.asymmetric import padding
+# from cryptography.hazmat.primitives import hashes
+
+from cryptography.fernet import Fernet
 
 #########################################################################
 ##   Function that return the current alert level of the sensor node   ##
@@ -13,7 +15,7 @@ from cryptography.hazmat.primitives import hashes
 
 def solicitarNivel():
 
-    return nivelActual
+    return nivelActual[6]
 
 #########################################################################
 ##    Function that return the current level of the firewall of the    ##
@@ -125,31 +127,39 @@ udpPORT_cliente = 4488
 sock_escucha = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 sock_habla = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 
-nivelActual = "6"
+nivelActual = "defcon6"
 
 ## Creamos los  sockets
 ## Create the sockets
 
 sock_escucha.bind ((udpIP_servidor,udpPORT_servidor))
 
-## Cargamos la clave privada del servidor de un fichero .pem
-## Load the private key of the server from a .pem file
+# ## Cargamos la clave privada del servidor de un fichero .pem
+# ## Load the private key of the server from a .pem file
 
-with open ('clave_privada_servidor.pem','rb') as key_file:
-    private_key_server = serialization.load_pem_private_key(
-        key_file.read(),
-        password = None,
-        backend = default_backend()
-    )
+# with open ('clave_privada_servidor.pem','rb') as key_file:
+#     private_key_server = serialization.load_pem_private_key(
+#         key_file.read(),
+#         password = None,
+#         backend = default_backend()
+#     )
 
-## Cargamos la clave pública del cliente de un fichero .pem
-## Load the public key of the client from a .pem file
+# ## Cargamos la clave pública del cliente de un fichero .pem
+# ## Load the public key of the client from a .pem file
 
-with open ('clave_publica_cliente.pem','rb') as key_file:
-    public_key_client = serialization.load_pem_public_key(
-        key_file.read(),
-        backend = default_backend()
-    )
+# with open ('clave_publica_cliente.pem','rb') as key_file:
+#     public_key_client = serialization.load_pem_public_key(
+#         key_file.read(),
+#         backend = default_backend()
+#     )
+
+
+file = open('clave_test', 'r')
+keylist  = file.readlines()
+key_aux = keylist[0]
+key = str.encode(key_aux)
+f = Fernet(key)
+
 
 
 
@@ -165,16 +175,18 @@ while True :
     cifrado = datos
 
 
-    ## We decrypt the message of the client.
+    # ## We decrypt the message of the client.
 
-    descifrado = private_key_server.decrypt(
-        cifrado,
-        padding.OAEP(
-            mgf=padding.MGF1(algorithm=hashes.SHA1()),
-            algorithm=hashes.SHA1(),
-            label=None
-        )
-    )
+    # descifrado = private_key_server.decrypt(
+    #     cifrado,
+    #     padding.OAEP(
+    #         mgf=padding.MGF1(algorithm=hashes.SHA1()),
+    #         algorithm=hashes.SHA1(),
+    #         label=None
+    #     )
+    # )
+
+    descifrado = f.decrypt(cifrado)
     
     recibido = descifrado.decode('UTF-8')
 
@@ -189,16 +201,18 @@ while True :
         mensaje = str.encode(respuesta)
 
     
-         ## Cipher the the encoded message with the server public key 
+        #  ## Cipher the the encoded message with the server public key 
 
-        cifrado_respuesta = public_key_client.encrypt(
-            mensaje,
-            padding.OAEP(
-                mgf=padding.MGF1(algorithm=hashes.SHA1()),
-                algorithm=hashes.SHA1(),
-                label=None
-            )
-        )
+        # cifrado_respuesta = public_key_client.encrypt(
+        #     mensaje,
+        #     padding.OAEP(
+        #         mgf=padding.MGF1(algorithm=hashes.SHA1()),
+        #         algorithm=hashes.SHA1(),
+        #         label=None
+        #     )
+        # )
+
+        cifrado_respuesta = f.encrypt(mensaje)
 
         ## Send the encrypted message to the server
 

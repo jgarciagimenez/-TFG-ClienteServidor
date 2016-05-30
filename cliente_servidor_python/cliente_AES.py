@@ -1,5 +1,6 @@
 import socket
 import time
+
 from colorama import Fore, Back, Style
 
 # from cryptography.hazmat.primitives import serialization
@@ -8,6 +9,7 @@ from colorama import Fore, Back, Style
 # from cryptography.hazmat.primitives import hashes
 
 from cryptography.fernet import Fernet
+
 
 #########################################################################
 ## Función para imprimir el menú para que el agente de sguridad        ##
@@ -48,6 +50,8 @@ def imprimir_escala(nivel):
 	print ('-------------|------------|------------|--------------|-------------|-----------|')
 	print ('          Nivel6        Nivel5      Nivel4          Nivel3       Nivel2      Nivel1' )
 
+
+
 #########################################################################
 ##                           MAIN PROGRAM                              ##
 #########################################################################
@@ -56,10 +60,10 @@ def imprimir_escala(nivel):
 ## Definimos lo parámetros para el socket para escuchar y hablar , se podrían ingresar por la consola si se desea
 ## Define the parametres needed to create the listen socket and the talking socket
 
-udpIP_servidor = "127.0.0.1"
+udpIP_servidor = "192.168.1.20"
 udpPORT_servidor = 4444
 query = False 
-udpIP_cliente = "127.0.0.1"
+udpIP_cliente = ""
 udpPORT_cliente = 4488
 
 ## Creamos los  sockets
@@ -70,6 +74,7 @@ sock_escucha = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 
 ## Iniciamos el socket para escuchar
 sock_escucha.bind ((udpIP_cliente,udpPORT_cliente))
+
 
 
 ## Cargamos la clave pública del servidor de un fichero .pem
@@ -96,6 +101,7 @@ keylist  = file.readlines()
 key_aux = keylist[0]
 key = str.encode(key_aux)
 f = Fernet(key)
+
 
 #########################################################################
 ##                           MAIN LOOP                                 ##
@@ -132,7 +138,9 @@ while True:
 	mensaje = str.encode(str(defcon))
 
 	
-	# ## Cipher the the encoded message with the server public key 
+	## Cipher the the encoded message with the server public key 
+
+# ## Cipher the the encoded message with the server public key 
 
 	# cifrado = public_key_server.encrypt(
 	# 	mensaje,
@@ -145,6 +153,7 @@ while True:
 
 	cifrado = f.encrypt(mensaje)
 
+	
 	## Send the encrypted message to the server
 	sock_habla.sendto(cifrado,(udpIP_servidor,udpPORT_servidor))
 

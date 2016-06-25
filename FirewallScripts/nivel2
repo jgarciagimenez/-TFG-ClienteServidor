@@ -65,3 +65,11 @@ iptables -A OUTPUT -p udp --sport 1024:65535 --dport 53 -m state --state NEW -j 
 
 #Permitimos las conexiones entrantes de los protocolos HTTP DNS Y HTTPS
 iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+#Permitimos el servidor de syslog remoto
+iptables -A INPUT -p udp --dport 514 -j ACCEPT
+
+
+iptables -A INPUT -j LOGGING
+iptables -A LOGGING -m limit --limit 2/min -j LOG --log-prefix "IPTables-Dropped: " --log-level 4
+iptables -A LOGGING -j DROP

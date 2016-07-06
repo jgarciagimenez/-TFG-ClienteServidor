@@ -1,5 +1,6 @@
 import socket
 import time
+import select
 from colorama import Fore, Back, Style
 
 # from cryptography.hazmat.primitives import serialization
@@ -46,7 +47,7 @@ def imprimir_escala(nivel):
 		print(Back.GREEN + '                                                                                '+Style.RESET_ALL)
 
 	print ('-------------|------------|------------|--------------|-------------|-----------|')
-	print ('          Nivel6        Nivel5      Nivel4          Nivel3       Nivel2      Nivel1' )
+	print ('          Nivel1        Nivel2      Nivel3          Nivel4       Nivel5      Nivel6' )
 
 #########################################################################
 ##                           MAIN PROGRAM                              ##
@@ -146,22 +147,41 @@ while True:
 	cifrado = f.encrypt(mensaje)
 
 	## Send the encrypted message to the server
-	sock_habla.sendto(cifrado,(udpIP_servidor,udpPORT_servidor))
 
 
 		## The program enter in this if que the option choosen is a query
 
 	if query :   
-		print("\n Se manda el mensaje de query " + defcon+ "\n")
 
-		## Wait until we receive the answer for the Query
+		Contestacion = False
+		while not Contestacion:
+			sock_habla.sendto(cifrado,(udpIP_servidor,udpPORT_servidor))
+			print("\n Se manda el mensaje de query " + defcon+ "\n")
+			sock_escucha.setblocking(0)
+			ready = select.select([sock_escucha], [], [], 2)
 
-		datos_respuesta,direccion = sock_escucha.recvfrom(1024)  ## 1024 es el tamaño del buffer           
-		query_cifrado = datos_respuesta
+			if ready[0]:
+				datos_respuesta,direccion = sock_escucha.recvfrom(4096)
+				query_cifrado = datos_respuesta
 
-		## When we receive the query and send the ACK
+				descifrado = f.decrypt(query_cifrado)
 
-		sock_habla.sendto(str.encode("ACK"),(udpIP_servidor,udpPORT_servidor))
+				## When we receive the query and send the ACK
+				sock_habla.sendto(str.encode("ACK"),(udpIP_servidor,udpPORT_servidor))
+
+				Contestacion = True
+				
+				if defcon[6] == "1":
+					imprimir_escala(int(descifrado))
+
+				else:
+
+					print (" La contestación del servidor es : " + descifrado.decode('UTF-8'))
+				
+
+
+
+
 
 
 		# ## Decrypt the answer of the query
@@ -174,41 +194,28 @@ while True:
 		# 		label=None
 		# 	)
 		# )
-
-		descifrado = f.decrypt(query_cifrado)
-
-		
-		if defcon[6] == "1":
-			imprimir_escala(int(descifrado))
-
-		else:
-
-			print (" La contestación del servidor es : " + descifrado.decode('UTF-8'))
     
     ## Whe enter the else when we send an alert level.
 
 	else : 
 
 		## we wait for the ACK of the sended alert level.
+		ACK_NIVEL = False
 
-		try:		
+		while not ACK_NIVEL:
+
 			print("\n Se manda el nivel " + defcon)
-			datos_respuesta,direccion = sock_escucha.recvfrom(1024)
-			
-			if datos_respuesta.decode('UTF-8') == 'ACK':
-				print("Se recibe el ACK")
-			else: 
-				print ("Se recibe: " + datos_respuesta.decode('UTF-8'))
+			sock_habla.sendto(cifrado,(udpIP_servidor,udpPORT_servidor))
+			sock_escucha.setblocking(0)
+			ready = select.select([sock_escucha], [], [], 2)
+			if ready[0]:
+				datos_respuesta,direccion = sock_escucha.recvfrom(4096)
 
-		except timeout:
-			print ("ACK timeout")
+				if datos_respuesta.decode('UTF-8') == "ACK":
+					print("Se recibe el ACK")
+					ACK_NIVEL = True
 
-
-
-
-
-
-
-
+				else: 
+					print ("Se recibe: " + datos_respuesta.decode('UTF-8'))
 
 

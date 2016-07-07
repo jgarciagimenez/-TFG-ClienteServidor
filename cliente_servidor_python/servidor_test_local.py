@@ -1,6 +1,7 @@
 import socket 
 import time
 import os
+import select
 
 # from cryptography.hazmat.primitives import serialization
 # from cryptography.hazmat.backends import default_backend
@@ -214,26 +215,27 @@ while True :
 
         cifrado_respuesta = f.encrypt(mensaje)
 
+
+
         ## Send the encrypted message to the server
-
-        sock_habla.sendto(cifrado_respuesta,(udpIP_cliente,udpPORT_cliente))
-
         ## Now we wait fot the ACK
 
-        try:        
+        ACK = False
+
+        while not ACK:
+
+            sock_habla.sendto(cifrado_respuesta,(udpIP_cliente,udpPORT_cliente))
 
             datos_respuesta,direccion = sock_escucha.recvfrom(1024)
             
             if datos_respuesta.decode('UTF-8') == 'ACK':
+                ACK = True
                 print("Se recibe el ACK")
+
             else: 
                 print ("Se recibe: " + datos_respuesta.decode('UTF-8'))
 
-        except timeout:
-            print ("ACK timeout")
-
-
-    # if the message is an alert level we enter this if
+        # if the message is an alert level we enter this if
 
     elif recibido.isdigit():
         

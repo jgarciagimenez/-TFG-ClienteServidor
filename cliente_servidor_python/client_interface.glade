@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.18.3 -->
+<!-- Generated with glade 3.20.0 -->
 <interface>
   <requires lib="gtk+" version="3.12"/>
-  <object class="GtkWindow" id="window1">
+  <object class="GtkWindow" id="window">
     <property name="name">window</property>
     <property name="can_focus">False</property>
+    <signal name="destroy" handler="on_window_destroy" swapped="no"/>
     <child>
       <object class="GtkBox" id="box1">
         <property name="visible">True</property>
@@ -176,7 +177,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
-                  <object class="GtkButton" id="button1">
+                  <object class="GtkButton" id="btn_nivel6">
                     <property name="label" translatable="yes">       Nivel 6       </property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -188,6 +189,7 @@
                     <property name="margin_bottom">5</property>
                     <property name="hexpand">True</property>
                     <property name="resize_mode">immediate</property>
+                    <signal name="clicked" handler="on_btn_nivel6_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -195,7 +197,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="button2">
+                  <object class="GtkButton" id="btn_nivel5">
                     <property name="label" translatable="yes">       Nivel 5       </property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -206,6 +208,7 @@
                     <property name="margin_top">5</property>
                     <property name="margin_bottom">5</property>
                     <property name="hexpand">True</property>
+                    <signal name="clicked" handler="on_btn_nivel5_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -213,7 +216,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="button3">
+                  <object class="GtkButton" id="btn_nivel4">
                     <property name="label" translatable="yes">       Nivel 4       </property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -224,6 +227,7 @@
                     <property name="margin_top">5</property>
                     <property name="margin_bottom">5</property>
                     <property name="hexpand">True</property>
+                    <signal name="clicked" handler="on_btn_nivel4_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -231,7 +235,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="button4">
+                  <object class="GtkButton" id="btn_nivel3">
                     <property name="label" translatable="yes">       Nivel 3       </property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -242,6 +246,7 @@
                     <property name="margin_top">5</property>
                     <property name="margin_bottom">5</property>
                     <property name="hexpand">True</property>
+                    <signal name="clicked" handler="on_btn_nivel3_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -249,7 +254,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="button5">
+                  <object class="GtkButton" id="btn_nivel2">
                     <property name="label" translatable="yes">       Nivel 2       </property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -260,6 +265,7 @@
                     <property name="margin_top">5</property>
                     <property name="margin_bottom">5</property>
                     <property name="hexpand">False</property>
+                    <signal name="clicked" handler="on_btn_nivel2_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -267,7 +273,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="button6">
+                  <object class="GtkButton" id="btn_nivel1">
                     <property name="label" translatable="yes">       Nivel 1       </property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -279,6 +285,7 @@
                     <property name="margin_bottom">10</property>
                     <property name="hexpand">True</property>
                     <property name="resize_mode">queue</property>
+                    <signal name="clicked" handler="on_btn_nivel1_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -324,7 +331,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
-                  <object class="GtkButton" id="button7">
+                  <object class="GtkButton" id="btn_nivelAct">
                     <property name="label" translatable="yes">Pedir nivel actual</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -335,6 +342,7 @@
                     <property name="margin_bottom">34</property>
                     <property name="hexpand">True</property>
                     <property name="vexpand">False</property>
+                    <signal name="clicked" handler="on_btn_nivelAct_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -342,7 +350,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="button8">
+                  <object class="GtkButton" id="btn_nivelFW">
                     <property name="label" translatable="yes">Pedir nivel cortafuegos</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -353,6 +361,7 @@
                     <property name="margin_bottom">30</property>
                     <property name="hexpand">True</property>
                     <property name="vexpand">False</property>
+                    <signal name="clicked" handler="on_btn_nivelFW_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -360,7 +369,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="button9">
+                  <object class="GtkButton" id="btn_nivelIDS">
                     <property name="label" translatable="yes">Pedir nivel IDS</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -371,6 +380,7 @@
                     <property name="margin_bottom">20</property>
                     <property name="hexpand">True</property>
                     <property name="vexpand">False</property>
+                    <signal name="clicked" handler="on_btn_nivelIDS_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -411,7 +421,7 @@
                     <property name="can_focus">False</property>
                     <property name="margin_left">34</property>
                     <property name="margin_top">15</property>
-                    <property name="margin_bottom">10</property>
+                    <property name="margin_bottom">15</property>
                     <property name="label" translatable="yes">Mensajes del servidor</property>
                   </object>
                   <packing>
@@ -421,12 +431,14 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkTextView" id="textview2">
+                  <object class="GtkTextView" id="servidor_text">
                     <property name="width_request">300</property>
                     <property name="height_request">200</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="margin_left">2</property>
+                    <property name="margin_left">10</property>
+                    <property name="hscroll_policy">natural</property>
+                    <property name="vscroll_policy">natural</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -465,7 +477,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkTextView" id="textview1">
+                  <object class="GtkTextView" id="cliente_text">
                     <property name="width_request">300</property>
                     <property name="height_request">200</property>
                     <property name="visible">True</property>

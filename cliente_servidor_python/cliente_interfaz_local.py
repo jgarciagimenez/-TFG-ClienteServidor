@@ -205,47 +205,52 @@ class Handler:
 
 	def on_btn_nivel6_clicked(self,*args):
 
-		mensaje = "6"
+		mensaje = "1"
 
 		self.add_text_cliente(mensaje)
 		self.esperar_ack_nivel(mensaje)
-		self.barra_nivel.set_fraction(0.5)
+		self.barra_nivel.set_fraction(1)
 
 	def on_btn_nivel5_clicked(self,*args):
-
-		mensaje = "5"
-
-		self.add_text_cliente(mensaje)
-		self.esperar_ack_nivel(mensaje)
-		self.barra_nivel.modify_bg(gi.STATE_PRELIGHT, gi.color_parse("blue"))
-
-	def on_btn_nivel4_clicked(self,*args):
-
-		mensaje = "4"
-
-		self.add_text_cliente(mensaje)
-		self.esperar_ack_nivel(mensaje)
-
-	def on_btn_nivel3_clicked(self,*args):
-
-		mensaje = "3"
-
-		self.add_text_cliente(mensaje)
-		self.esperar_ack_nivel(mensaje)
-
-	def on_btn_nivel2_clicked(self,*args):
 
 		mensaje = "2"
 
 		self.add_text_cliente(mensaje)
 		self.esperar_ack_nivel(mensaje)
+		self.barra_nivel.set_fraction(0.75)
 
-	def on_btn_nivel1_clicked(self,*args):
 
-		mensaje = "1"
+	def on_btn_nivel4_clicked(self,*args):
+
+		mensaje = "3"
 
 		self.add_text_cliente(mensaje)
 		self.esperar_ack_nivel(mensaje)
+		self.barra_nivel.set_fraction(0.57)
+
+	def on_btn_nivel3_clicked(self,*args):
+
+		mensaje = "4"
+
+		self.add_text_cliente(mensaje)
+		self.esperar_ack_nivel(mensaje)
+		self.barra_nivel.set_fraction(0.42)
+
+	def on_btn_nivel2_clicked(self,*args):
+
+		mensaje = "5"
+
+		self.add_text_cliente(mensaje)
+		self.esperar_ack_nivel(mensaje)
+		self.barra_nivel.set_fraction(0.27)
+
+	def on_btn_nivel1_clicked(self,*args):
+
+		mensaje = "6"
+
+		self.add_text_cliente(mensaje)
+		self.esperar_ack_nivel(mensaje)
+		self.barra_nivel.set_fraction(0.11)
 
 	def on_btn_nivelAct_clicked(self,*args):
 		

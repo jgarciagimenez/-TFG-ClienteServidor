@@ -11,6 +11,7 @@
 iptables -F INPUT
 iptables -F FORWARD
 iptables -F OUTPUT
+iptables -F LOGGING
 
 ## Hacemos que por defecto la política sea rechazar los paquetes
 

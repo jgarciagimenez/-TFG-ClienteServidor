@@ -12,6 +12,9 @@
 # Primero eliminamos todas las reglas anteriores.
 
 iptables -F INPUT
+iptables -F OUTPUT
+iptables -F LOGGING
+iptables -F FORWARD
 
 # Hacemos que por defecto la política sea rechazar los paquetes
 
@@ -37,7 +40,8 @@ iptables -A OUTPUT -p udp --dport 5555 -j ACCEPT
 
 iptables -A OUTPUT -p udp --dport 514 -j ACCEPT
 
-iptables -N LOGGING
+
 iptables -A INPUT -j LOGGING
-iptables -A LOGGING -m limit --limit 2/min -j LOG --log-prefix "IPTables-Dropped: " --log-level 4
+iptables -A OUTPUT -j LOGGING
+iptables -A LOGGING -m limit --limit 2/sec -j LOG --log-prefix "IPTables-Dropped: " --log-level 4
 iptables -A LOGGING -j DROP
